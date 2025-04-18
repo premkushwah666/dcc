@@ -6,5 +6,11 @@ import com.dcc.entity.User;
 
 public interface UserRepository extends JpaRepository<User, Integer>{
 	
+	User findByuserName(String name);
 	
+	User deleteByuserName(String name);
+	
+	User findByemail(String email);
+	
+	User DeleteByemail(String email);
 }
