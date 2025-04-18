@@ -16,7 +16,6 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/public")
-//@CrossOrigin(origins = "http://localhost:5173")
 public class PublicController {
     @Autowired
     private JwtUtil jwtUtil;
@@ -44,11 +43,23 @@ public class PublicController {
             );
             UserDetails userDetails = userDetailsService.loadUserByUsername(user.getEmail());
             String jwt = jwtUtil.generateToken(userDetails.getUsername());
-            return new ResponseEntity<>(jwt, HttpStatus.OK);
+//            System.out.println(jwt);
+//            return new ResponseEntity<>(Map.of("token",jwt), HttpStatus.OK);
+            return new ResponseEntity<>(Map.of(
+                    "message", "Login successful",
+                    "token", jwt
+            ), HttpStatus.OK);
+
         } catch (Exception e) {
             System.out.println(e);
             log.error("Exception occured while creating authenticaton token");
             return new ResponseEntity<>(Map.of("message","username or password is incorrect"),HttpStatus.BAD_REQUEST);
         }
     }
+
+    @GetMapping("/health-check")
+    public String healthCheck(){
+        return "ok";
+    }
+
 }
