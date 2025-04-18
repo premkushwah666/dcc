@@ -3,9 +3,6 @@ package com.dcc.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.dcc.StringUtil;
-import com.dcc.Exception.ApiException;
-import com.dcc.Validation.Valide;
 import com.dcc.entity.User;
 import com.dcc.repository.UserRepository;
 
@@ -17,24 +14,29 @@ public class UserService {
 
 	public User createUser(User user)
 	{
-
-		if(StringUtil.isNullOrEmplty(user.getEmail()))
-		{
-			throw new ApiException("Missing Email");
-		}
-		if(StringUtil.isNullOrEmplty(user.getEmail()))
-		{
-	        throw new ApiException("Missing Name");
-		}
-		if(StringUtil.isNullOrEmplty(user.getEmail()))
-		{
-			throw new ApiException("Missing Password");
-		}
-		if(Valide.isValide(user.getEmail()))
-		{
 			return userRepository.save(user);
-		}
-		return null;
-			
 	}
+
+	public User findByUserName(String name) 
+	{
+		return userRepository.findByuserName(name);
+	}
+	
+	public boolean deleteUser(String name)
+	{
+		userRepository.deleteByuserName(name);
+		return true;
+	}
+	
+	public User findByEmail(String email)
+	{
+		return userRepository.findByemail(email);
+	}
+	
+	public boolean deleteByEmail(String email)
+	{
+		userRepository.DeleteByemail(email);
+		return true;
+	}
+	
 }

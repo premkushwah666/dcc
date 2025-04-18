@@ -1,4 +1,4 @@
-package com.dcc;
+package com.dcc.util;
 
 public class StringUtil {
 
