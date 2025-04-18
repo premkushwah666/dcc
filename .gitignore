@@ -1,5 +1,7 @@
-application.properties.gitignore
-application-dev.properties.gitignore
+application.properties
+.gitignore
+application-dev.properties
+
 HELP.md
 target/
 !.mvn/wrapper/maven-wrapper.jar

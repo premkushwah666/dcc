@@ -1,6 +1,7 @@
 package com.dcc.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.dcc.entity.User;
@@ -10,11 +11,15 @@ import com.dcc.repository.UserRepository;
 public class UserService {
 	
 	@Autowired
-	private UserRepository userRepository; 
+	private UserRepository userRepository;
+
+	@Autowired
+	PasswordEncoder passwordEncoder;
 
 	public User createUser(User user)
 	{
-			return userRepository.save(user);
+		user.setPassword(passwordEncoder.encode(user.getPassword()));
+		return userRepository.save(user);
 	}
 
 	public User findByUserName(String name) 
@@ -35,7 +40,7 @@ public class UserService {
 	
 	public boolean deleteByEmail(String email)
 	{
-		userRepository.DeleteByemail(email);
+		userRepository.deleteByemail(email);
 		return true;
 	}
 	

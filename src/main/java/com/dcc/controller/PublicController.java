@@ -1,7 +1,11 @@
 package com.dcc.controller;
 
+import com.dcc.Exception.ApiException;
+import com.dcc.Validation.Valide;
 import com.dcc.entity.User;
+import com.dcc.service.UserService;
 import com.dcc.util.JwtUtil;
+import com.dcc.util.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,16 +28,43 @@ public class PublicController {
     private UserDetailsService userDetailsService;
 
     @Autowired
+    private UserService userService;
+
+    @Autowired
     AuthenticationManager authenticationManager;
 
     private static final Logger log = LoggerFactory.getLogger(PublicController.class);
 
-//    @PostMapping("/signup")
-//    public ResponseEntity<?> createUser(@RequestBody User user){
-//        boolean ok = userService.saveNewUser(user);
-//        if(ok) return new ResponseEntity(HttpStatus.CREATED);
-//        return new ResponseEntity<>(HttpStatus.CONFLICT);
-//    }
+
+    @PostMapping("/signup")
+	public ResponseEntity<?> createUser(@RequestBody User user) throws ApiException
+	{
+		if(user!=null)
+		{
+			if(StringUtil.isNullOrEmplty(user.getUserName()))
+			{
+				throw new ApiException("Missing User Name");
+			}
+			if(StringUtil.isNullOrEmplty(user.getEmail()))
+			{
+		        throw new ApiException("Missing Email");
+			}
+			if(StringUtil.isNullOrEmplty(user.getPassword()))
+			{
+				throw new ApiException("Missing Password");
+			}
+			if(Valide.isValide(user.getEmail()))
+			{
+				userService.createUser(user);
+				return new ResponseEntity<>(user,HttpStatus.CREATED);
+			}
+			else
+			{
+				throw new ApiException("Invalide Email");
+			}
+		}
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+	}
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody User user){
