@@ -36,45 +36,8 @@ public class User {
     private String password;
     @Enumerated(EnumType.STRING)
     private Role role;
+    
+    private boolean isActive = true;
     //private List<String> roles;
 
-//    public Integer getId() {
-//        return id;
-//    }
-//
-//    public void setId(Integer id) {
-//        this.id = id;
-//    }
-//
-//    public @NonNull String getUserName() {
-//        return userName;
-//    }
-//
-//    public void setUserName(@NonNull String userName) {
-//        this.userName = userName;
-//    }
-//
-//    public @NonNull String getEmail() {
-//        return email;
-//    }
-//
-//    public void setEmail(@NonNull String email) {
-//        this.email = email;
-//    }
-//
-//    public @NonNull String getPassword() {
-//        return password;
-//    }
-//
-//    public void setPassword(@NonNull String password) {
-//        this.password = password;
-//    }
-//
-//    public List<String> getRoles() {
-//        return roles;
-//    }
-//
-//    public void setRoles(List<String> roles) {
-//        this.roles = roles;
-//    }
 }

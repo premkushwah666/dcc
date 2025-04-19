@@ -28,15 +28,15 @@ public class UserService {
 		return true;
 	}
 	
-	public User findByEmail(String email)
-	{
-		return userRepository.findByemail(email);
-	}
-	
-	public boolean deleteByEmail(String email)
-	{
-		userRepository.DeleteByemail(email);
-		return true;
-	}
+//	public User findByEmail(String email)
+//	{
+//		return userRepository.findByemail(email);
+//	}
+//	
+//	public boolean deleteByEmail(String email)
+//	{
+//		userRepository.DeleteByemail(email);
+//		return true;
+//	}
 	
 }

@@ -89,11 +89,12 @@ public class UserController {
 		String name=auth.getName();
 		User userInDb=userService.findByUserName(name);
 		//User userInDb=userService.findByEmail(name);
-		if(userInDb!=null)
+		if(userInDb != null && userInDb.isActive())
 		{
-			userService.deleteUser(name);
-			return new ResponseEntity<>(new ApiResponse("User deleted Successfully"),HttpStatus.OK);
+			userInDb.setActive(false);
+			userService.createUser(userInDb);
+			return new ResponseEntity<>(new ApiResponse("User diactivated Successfully"),HttpStatus.OK);
 		}
-		throw new ApiException("User Not Found");
+		throw new ApiException("User Not Activated");
 	}
 }
