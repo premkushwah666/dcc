@@ -7,16 +7,10 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-
-import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
-import jakarta.persistence.Id;
 import lombok.*;
-
-import java.util.List;
-
 import com.dcc.Enumiration.Role;
-import java.util.List;
+
 
 @Entity
 @Table(name = "users")//Document(~table)

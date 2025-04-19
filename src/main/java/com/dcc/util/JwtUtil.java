@@ -38,25 +38,17 @@ public class JwtUtil {
                 .add(claims)
                 .subject(username)
                 .issuedAt(new Date(System.currentTimeMillis()))//second|minute|how many minute
-                .expiration(new Date(System.currentTimeMillis() + 60 * 60 * 30))
+                .expiration(new Date(System.currentTimeMillis() + 60 * 60 * 60 * 3))
                 .and()
                 .signWith(getKey())
                 .compact();
     }
 
     private SecretKey getKey(){
-        //JWTService() <-- yha pr bhi likh sakte the constructor ko
         byte[] keyBytes = Decoders.BASE64.decode(secretKey);
         return Keys.hmacShaKeyFor(keyBytes);
     }
 
-    //    public String extactUserName(String token) {
-//        return "";
-//    }
-//
-//    public boolean validateToken(String token, UserDetails userDetails) {
-//        return true;
-//    }
     /////////////////////copy pasted from repo//////////////////////////////
     public String extractUserName(String token) {
         // extract the username from jwt token

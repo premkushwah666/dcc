@@ -1,6 +1,7 @@
 package com.dcc.config;
 
 import com.dcc.filter.JwtFilter;
+import com.dcc.service.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -29,6 +30,9 @@ public class SpringSecurityConfig {
     @Autowired
     JwtFilter jwtFilter;
 
+    @Autowired
+    UserDetailsServiceImpl userDetailsService;
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
@@ -43,23 +47,11 @@ public class SpringSecurityConfig {
         return http.build();
     }
 
-    @Bean
-    public UserDetailsService userDetailsService() {
-        PasswordEncoder b = passwordEncoder();
-        UserDetails userDetails = User.builder()
-                .username("user")
-                .password( b.encode("password"))
-                .roles("USER")
-                .build();
-
-        return new InMemoryUserDetailsManager(userDetails);
-    }
-
     @Bean  /// unAuthenticated Object ----> Authentication Provider ---> Authenticated Object
     public AuthenticationProvider authenticationProvider(){
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
         provider.setPasswordEncoder(passwordEncoder());
-        provider.setUserDetailsService(userDetailsService());
+        provider.setUserDetailsService(userDetailsService);
         return provider;
     }
 
@@ -69,7 +61,6 @@ public class SpringSecurityConfig {
         return encoder;
     }
 
-    //public controller me @autowired kiya h esliye bean banani padegi
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration auth) throws Exception {
         return auth.getAuthenticationManager();
