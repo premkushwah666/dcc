@@ -47,22 +47,6 @@ public class SpringSecurityConfig {
         return http.build();
     }
 
-//    @Bean
-//    public UserDetailsService userDetailsService() {
-//        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
-//        provider.setUserDetailsService(userDetailsService);
-//        provider.setPasswordEncoder(passwordEncoder());
-//
-//        PasswordEncoder b = passwordEncoder();
-//        UserDetails userDetails = User.builder()
-//                .username("user")
-//                .password( b.encode("password"))
-//                .roles("USER")
-//                .build();
-//
-//        return new InMemoryUserDetailsManager(userDetails);
-//    }
-
     @Bean  /// unAuthenticated Object ----> Authentication Provider ---> Authenticated Object
     public AuthenticationProvider authenticationProvider(){
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
@@ -77,7 +61,6 @@ public class SpringSecurityConfig {
         return encoder;
     }
 
-    //public controller me @autowired kiya h esliye bean banani padegi
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration auth) throws Exception {
         return auth.getAuthenticationManager();
