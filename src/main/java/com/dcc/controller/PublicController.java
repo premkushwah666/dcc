@@ -39,20 +39,20 @@ public class PublicController {
     @PostMapping("/signup")
 	public ResponseEntity<?> createUser(@RequestBody User user) throws ApiException
 	{
-		if(user!=null)
-		{
-			if(StringUtil.isNullOrEmplty(user.getUserName()))
-			{
-				throw new ApiException("Missing User Name");
-			}
-			if(StringUtil.isNullOrEmplty(user.getEmail()))
-			{
-		        throw new ApiException("Missing Email");
-			}
-			if(StringUtil.isNullOrEmplty(user.getPassword()))
-			{
-				throw new ApiException("Missing Password");
-			}
+    	if(user!=null)
+    	{
+//			if(StringUtil.isNullOrEmplty(user.getUserName()))
+//			{
+//				throw new ApiException("Missing User Name");
+//			}
+//			if(StringUtil.isNullOrEmplty(user.getEmail()))
+//			{
+//		        throw new ApiException("Missing Email");
+//			}
+//			if(StringUtil.isNullOrEmplty(user.getPassword()))
+//			{
+//				throw new ApiException("Missing Password");
+//			}
 			if(Valide.isValide(user.getEmail()))
 			{
 				userService.createUser(user);
@@ -84,7 +84,7 @@ public class PublicController {
         } catch (Exception e) {
             System.out.println(e);
             log.error("Exception occured while creating authenticaton token");
-            return new ResponseEntity<>(Map.of("message","username or password is incorrect"),HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new ApiException("Username or Password is incorrect"),HttpStatus.BAD_REQUEST);
         }
     }
 

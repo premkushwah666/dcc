@@ -1,10 +1,11 @@
 package com.dcc.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,49 +21,68 @@ import com.dcc.Exception.ApiException;
 import com.dcc.Validation.Valide;
 import com.dcc.entity.User;
 import com.dcc.service.UserService;
-import com.dcc.util.StringUtil;
 
 @RestController
-@RequestMapping("/user")
-public class UserController {
-	
+@RequestMapping("/admin")
+@PreAuthorize("hasRole('ADMIN')")
+public class AdminController {
+
 	@Autowired
 	private UserService userService;
 	@Autowired
 	PasswordEncoder passwordEncoder;
 	
-	@GetMapping("/check")
-	public String check()
+	@GetMapping("/getAllUsers")
+	public ResponseEntity<List> getAllUsers()
 	{
-		return "OK";
+		List allUsers=userService.getAllUsers();
+		return new ResponseEntity<>(allUsers,HttpStatus.OK);
 	}
 	
-	@PutMapping("/updateUser/id/{myid}")
-	public ResponseEntity<User> updateUser(@PathVariable Integer myid,@RequestBody User user) throws ApiException
+	@PostMapping("/createUser")
+	public ResponseEntity<?> createUser(@RequestBody User user) throws ApiException
+	{
+			if(Valide.isValide(user.getEmail()))
+			{
+				userService.createUserByAdmin(user);
+				return new ResponseEntity<>(user,HttpStatus.CREATED);
+			}
+			else
+			{
+				throw new ApiException("Invalide Email");
+			}
+		
+			//return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+	}
+
+
+	@PutMapping("/updateUser/id/{userId}")
+	public ResponseEntity<?> updateUser(@PathVariable Integer userId,@RequestBody User user) throws ApiException
 	{
 //		Authentication auth=SecurityContextHolder.getContext().getAuthentication();
 //		String name=auth.getName();
 		//User userInDb=userService.findByUserName(name);
 		//User userInDb=userService.findByEmail(user.getEmail());
-		User userInDb=userService.findById(myid).orElse(null);
-		if(userInDb!=null && userInDb.isActive())
+		User userInDb=userService.findById(userId).orElse(null);
+		if(userInDb!=null&& userInDb.isActive())
 		{
 			userInDb.setUserName(user.getUserName()!=null?user.getUserName():userInDb.getUserName());
 			userInDb.setPassword(user.getPassword()!=null?passwordEncoder.encode(user.getPassword()):userInDb.getPassword());
 			userInDb.setEmail(user.getEmail()!=null?user.getEmail():userInDb.getEmail());
+			userInDb.setRole(user.getRole()!=null?user.getRole():userInDb.getRole());
 			userService.updateUser(userInDb);
-			return new ResponseEntity<>(user,HttpStatus.OK);
+			return new ResponseEntity<>(new ApiResponse("User updated successfully"),HttpStatus.OK);
 		}
 		//return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		throw new ApiException("User Not Found/Activated");
 	}
 	
-	@DeleteMapping("/deleteUser")
-	public ResponseEntity<ApiResponse> deleteUser()
+	@DeleteMapping("/deleteUser/id/{userId}")
+	public ResponseEntity<ApiResponse> deleteUser(@PathVariable Integer userId)
 	{
-		Authentication auth=SecurityContextHolder.getContext().getAuthentication();
-		String name=auth.getName();
-		User userInDb=userService.findByUserName(name);
+//		Authentication auth=SecurityContextHolder.getContext().getAuthentication();
+//		String name=auth.getName();
+		User userInDb=userService.findById(userId).orElse(null);
 		//User userInDb=userService.findByEmail(name);
 		if(userInDb != null && userInDb.isActive())
 		{
@@ -72,4 +92,5 @@ public class UserController {
 		}
 		throw new ApiException("User Not Found/Activated");
 	}
+	
 }
