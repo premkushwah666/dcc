@@ -7,7 +7,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,10 +14,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.dcc.ApiResponse;
 import com.dcc.Exception.ApiException;
-import com.dcc.Validation.Valide;
 import com.dcc.entity.User;
 import com.dcc.service.UserService;
-import com.dcc.util.StringUtil;
 
 @RestController
 @RequestMapping("/user")
@@ -36,9 +33,9 @@ public class UserController {
 	@PutMapping("/updateUser")
 	public ResponseEntity<User> updateUser(@RequestBody User user) throws ApiException
 	{
-		Authentication auth=SecurityContextHolder.getContext().getAuthentication();
-		String name=auth.getName();
-		User userInDb=userService.findByUserName(name);
+		//Authentication auth=SecurityContextHolder.getContext().getAuthentication();
+		//String name=auth.getName();
+		User userInDb=userService.findByEmail(user.getEmail());
 		//User userInDb=userService.findByEmail(name);
 		if(userInDb!=null)
 		{

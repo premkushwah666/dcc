@@ -19,7 +19,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         User user = userRepository.findByemail(username);
         if(user!=null){
             UserDetails userdetails = org.springframework.security.core.userdetails.User.builder()
-                    .username(user.getUserName())
+                    .username(user.getEmail())
                     .password(user.getPassword())
                     .roles(user.getRole().toString())//<-- this require comma(,)comma seperated values elipse(...) operator
 //                    .roles(user.getRoles().toArray(new String[0]))//<-- this require comma(,)comma seperated values elipse(...) operator

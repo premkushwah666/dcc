@@ -1,6 +1,5 @@
 package com.dcc.util;
 
-
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
@@ -31,7 +30,7 @@ public class JwtUtil {
     }
 
     public String generateToken(String username){
-        Map<String,Object> claims = new HashMap<>();
+         Map<String,Object> claims = new HashMap<>();
 
         return Jwts.builder()
                 .claims()
