@@ -21,7 +21,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         //System.out.println(user.getUserName());
         if(user!=null){
             UserDetails userdetails = org.springframework.security.core.userdetails.User.builder()
-                    .username(user.getUserName())
+                    .username(user.getEmail())
                     .password(user.getPassword())
                     .roles(user.getRole().toString())//<-- this require comma(,)comma seperated values elipse(...) operator
 //                    .roles(user.getRoles().toArray(new String[0]))//<-- this require comma(,)comma seperated values elipse(...) operator

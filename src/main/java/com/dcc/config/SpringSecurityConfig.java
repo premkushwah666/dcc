@@ -1,5 +1,6 @@
 package com.dcc.config;
 
+import com.dcc.Enumiration;
 import com.dcc.filter.JwtFilter;
 import com.dcc.service.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,8 @@ import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import java.util.Enumeration;
+
 @Configuration
 @EnableWebSecurity
 public class SpringSecurityConfig {
@@ -41,6 +44,10 @@ public class SpringSecurityConfig {
 //                        .requestMatchers("/public/**").permitAll()
 //                        .anyRequest().authenticated()
                 		.anyRequest().permitAll()
+                                //.anyRequest().permitAll()
+                        .requestMatchers("/public/**").permitAll()
+                        .requestMatchers("/user/**").hasAnyRole("STUDENT","ADMIN")
+                        .anyRequest().authenticated()
                 )
                 .httpBasic(Customizer.withDefaults())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
