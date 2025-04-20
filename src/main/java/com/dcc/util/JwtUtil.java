@@ -4,6 +4,7 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import javax.crypto.KeyGenerator;
@@ -17,17 +18,23 @@ import java.util.function.Function;
 @Component
 public class JwtUtil {
 
-    private String secretKey = "";
+    @Value("${jwt.util.secretKey}")
+    private String secretKey;
 
-    public JwtUtil(){
-        try{
-            KeyGenerator keyGenerator = KeyGenerator.getInstance("HmacSHA256");
-            SecretKey sk = keyGenerator.generateKey();//generating a key
-            secretKey = Base64.getEncoder().encodeToString(sk.getEncoded());//encoding it and assigning it
-        }catch (Exception e){
-            System.out.println(e);
-        }
-    }
+    //Assigin key directly from properties
+    //we can generate new key from here when we want to change in key
+    //private String secretKey = "";
+
+//    public JwtUtil(){
+//        try{
+//            KeyGenerator keyGenerator = KeyGenerator.getInstance("HmacSHA256");
+//            SecretKey sk = keyGenerator.generateKey();//generating a key
+//            //secretKey = Base64.getEncoder().encodeToString(sk.getEncoded());//encoding it and assigning it
+//            System.out.println(secretKey);
+//        }catch (Exception e){
+//            System.out.println(e);
+//        }
+//    }
 
     public String generateToken(String username){
          Map<String,Object> claims = new HashMap<>();
@@ -37,7 +44,7 @@ public class JwtUtil {
                 .add(claims)
                 .subject(username)
                 .issuedAt(new Date(System.currentTimeMillis()))//second|minute|how many minute
-                .expiration(new Date(System.currentTimeMillis() + 60 * 60 * 60 * 3))
+                .expiration(new Date(System.currentTimeMillis() + 60 * 60 * 60 * 6))
                 .and()
                 .signWith(getKey())
                 .compact();

@@ -62,7 +62,7 @@ public class SpringSecurityConfig {
 
     @Bean
     public PasswordEncoder passwordEncoder() {
-        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(12);
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(10);
         return encoder;
     }
 
