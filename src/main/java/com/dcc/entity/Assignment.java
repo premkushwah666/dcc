@@ -19,6 +19,18 @@ public class Assignment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    private String title;
+    private String description;
+    private LocalDate deadline;
+
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<AssignmentFile> files = new ArrayList<>();
+
+
+
+   /* @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @Column(nullable = false)
     private String title;
@@ -77,5 +89,5 @@ public class Assignment {
     public void addSubmission(Submission submission) {
         submissions.add(submission);
         submission.setAssignment(this);
-    }
+    }*/
 }
