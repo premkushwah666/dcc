@@ -24,7 +24,7 @@ import com.dcc.service.UserService;
 
 @RestController
 @RequestMapping("/admin")
-@PreAuthorize("hasRole('ADMIN')")
+//@PreAuthorize("hasRole('ADMIN')")
 public class AdminController {
 
 	@Autowired
@@ -42,7 +42,7 @@ public class AdminController {
 	@PostMapping("/createUser")
 	public ResponseEntity<?> createUser(@RequestBody User user) throws ApiException
 	{
-			if(Valide.isValide(user.getEmail()))
+			if(Valide.isValideEmail(user.getEmail()))
 			{
 				userService.createUserByAdmin(user);
 				return new ResponseEntity<>(user,HttpStatus.CREATED);
@@ -51,18 +51,12 @@ public class AdminController {
 			{
 				throw new ApiException("Invalide Email");
 			}
-		
-			//return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 	}
 
 
 	@PutMapping("/updateUser/id/{userId}")
 	public ResponseEntity<?> updateUser(@PathVariable Integer userId,@RequestBody User user) throws ApiException
 	{
-//		Authentication auth=SecurityContextHolder.getContext().getAuthentication();
-//		String name=auth.getName();
-		//User userInDb=userService.findByUserName(name);
-		//User userInDb=userService.findByEmail(user.getEmail());
 		User userInDb=userService.findById(userId).orElse(null);
 		if(userInDb!=null&& userInDb.isActive())
 		{

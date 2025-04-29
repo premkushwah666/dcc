@@ -53,7 +53,7 @@ public class PublicController {
 //			{
 //				throw new ApiException("Missing Password");
 //			}
-			if(Valide.isValide(user.getEmail()))
+			if(Valide.isValideEmail(user.getEmail()))
 			{
 				userService.createUser(user);
 				return new ResponseEntity<>(user,HttpStatus.CREATED);

@@ -9,7 +9,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.*;
-import com.dcc.Enumiration.Role;
+import com.dcc.enums.Enumiration.Role;
 
 
 @Entity
