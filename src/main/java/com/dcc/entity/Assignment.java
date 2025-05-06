@@ -1,6 +1,8 @@
 package com.dcc.entity;
 
 import com.dcc.enums.Enumiration;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -17,6 +19,19 @@ import java.util.List;
 @AllArgsConstructor
 public class Assignment {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private String title;
+    private String description;
+    private LocalDate deadline;
+
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
+    private List<AssignmentFile> files = new ArrayList<>();
+
+
+
+   /* @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
@@ -77,5 +92,5 @@ public class Assignment {
     public void addSubmission(Submission submission) {
         submissions.add(submission);
         submission.setAssignment(this);
-    }
+    }*/
 }

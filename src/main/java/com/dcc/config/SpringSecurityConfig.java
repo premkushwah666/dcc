@@ -38,7 +38,7 @@ public class SpringSecurityConfig {
 //                        .anyRequest().authenticated()
                 		//.anyRequest().permitAll()
                                 //.anyRequest().permitAll()
-                        .requestMatchers("/public/**").permitAll()
+                        .requestMatchers("/public/**","/assignments/**").permitAll()
                         .requestMatchers("/user/**").hasRole("STUDENT")
                         .requestMatchers("/admin/**").hasRole("ADMIN")
                         .anyRequest().authenticated()
