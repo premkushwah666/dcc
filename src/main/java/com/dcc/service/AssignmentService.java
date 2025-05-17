@@ -27,47 +27,26 @@ public class AssignmentService {
     @Autowired
     private AssignmentRepository assignmentRepository;
 
-    public Assignment createAssignment(String title, String description, String deadlineStr, MultipartFile[] files) throws IOException {
+    @Autowired
+    private FileStorageService fileStorageService;
+
+    public Assignment createAssignment(String title, String description, String deadlineStr, MultipartFile[] files) {
        
         LocalDate deadline = LocalDate.parse(deadlineStr);
 
-       
         Assignment assignment = new Assignment();
         assignment.setTitle(title);
         assignment.setDescription(description);
         assignment.setDeadline(deadline);
+        List<AssignmentFile> assignmentFiles = fileStorageService.storeAssignments(files);
 
-        List<AssignmentFile> fileList = new ArrayList<>();
-
-        for (MultipartFile file : files) {
-            if (!file.isEmpty()) {
-                String originalFileName = file.getOriginalFilename();
-                String fileExtension = originalFileName.substring(originalFileName.lastIndexOf('.'));
-                String storedFileName = UUID.randomUUID() + fileExtension;
-
-             
-                Path filePath = Paths.get(FILE_STORAGE_PATH + storedFileName);
-
-             
-                Files.createDirectories(filePath.getParent());
-
-              
-                Files.write(filePath, file.getBytes(), StandardOpenOption.CREATE_NEW);
-
-               
-                AssignmentFile assignmentFile = new AssignmentFile();
-                assignmentFile.setOriginalFileName(originalFileName);
-                assignmentFile.setStoredFileName(storedFileName);
-                assignmentFile.setFileType(file.getContentType());
-                assignmentFile.setFileSize(file.getSize());
-                assignmentFile.setFilePath(filePath.toString());
-                assignmentFile.setAssignment(assignment); 
-
-                fileList.add(assignmentFile);
-            }
+        // Seting the reference in each file
+        for (AssignmentFile file : assignmentFiles) {
+            file.setAssignment(assignment);
         }
 
-        assignment.setFiles(fileList);
+        assignment.setFiles(assignmentFiles);
+
         return assignmentRepository.save(assignment);
     }
 

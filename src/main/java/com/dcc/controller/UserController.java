@@ -49,7 +49,6 @@ public class UserController {
 		//User userInDb=userService.findByEmail(user.getEmail());
 		//User userInDb=userService.findByEmail(name);
 		if(userInDb!=null&& userInDb.isActive())
-
 		{
 			userInDb.setUserName(user.getUserName()!=null?user.getUserName():userInDb.getUserName());
 			userInDb.setPassword(user.getPassword()!=null?passwordEncoder.encode(user.getPassword()):userInDb.getPassword());

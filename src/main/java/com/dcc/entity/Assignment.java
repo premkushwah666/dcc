@@ -25,7 +25,7 @@ public class Assignment {
     private String description;
     private LocalDate deadline;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "assignment", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
     private List<AssignmentFile> files = new ArrayList<>();
 
